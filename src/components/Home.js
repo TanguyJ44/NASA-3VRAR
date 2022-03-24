@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class Home extends React.Component {
+  
     constructor(props) {
       super(props);
       this.state = {
@@ -57,17 +59,25 @@ class Home extends React.Component {
       } else {
         return (
           <>
+          <br></br>
           <h1>Prochain lancement :</h1>
-          <p>Nom : {launchNext.mission_name}</p>
+          <img width="100" alt="mission" src={launchNext.links.mission_patch_small}></img>
+          <br></br>
+          <Link to={"/launch/" + launchNext.id}>{launchNext.mission_name}</Link>
           <p>Lanceur : {launchNext.rocket.rocket_name}</p>
-          <p>Date : {launchNext.launch_date_utc}</p>
-          <img width="100" src={launchNext.links.mission_patch_small}></img>
+          <p>Date : {new Date(launchNext.launch_date_utc).toLocaleString()}</p>
 
           <h1>Derniers lancements :</h1>
           <ul>
             {launchPast.map(launch => (
-              <li>
-                {launch.mission_name}
+              <li key={launch.id}>
+                <img width="100" alt="mission" src={launch.links.mission_patch_small}></img>
+                <br></br>
+                <Link to={"/launch/" + launch.id}>{launch.mission_name}</Link>
+                <li>Lanceur: {launch.rocket.rocket_name}</li>
+                <li>Date: {new Date(launch.launch_date_utc).toLocaleString()}</li>
+                <li>{launch.launch_success === true ? "Lancement réussi" : "Lancement raté"}</li>
+                <br></br>
               </li>
             ))}
           </ul>
