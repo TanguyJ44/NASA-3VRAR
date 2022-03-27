@@ -16,15 +16,25 @@ class Launches extends React.Component {
       limit: 10,
       launches: null,
       sortDate: 0,
-      sortDateValue: "Non",
+      sortDateValue: "⬛️",
+      search: "",
       btnMore: false
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  // https://api.spacex.land/rest/launches?find={%22mission_name%22:%22test%22}
-
+  
   componentDidMount() {
     this.updateLimit();
+  }
+
+  handleChange(event) {
+    this.setState({search: event.target.value});
+  }
+
+  handleSubmit(event) {
+    this.getMoreLaunches();
+    event.preventDefault();
   }
 
   updateLimit() {
@@ -50,7 +60,15 @@ class Launches extends React.Component {
       linkSortDate = "&sort=launch_date_local";
     }
 
-    fetch("https://api.spacex.land/rest/launches?limit=" + limit + linkSortDate)
+    let searchData = "";
+
+    if (this.state.search === "") {
+      searchData = "";
+    } else {
+      searchData = "&find={%22mission_name%22:%22" + this.state.search + "%22}";
+    }
+
+    fetch("https://api.spacex.land/rest/launches?limit=" + limit + linkSortDate + searchData)
     .then(res => res.json())
     .then(
       (result) => {
@@ -74,13 +92,13 @@ class Launches extends React.Component {
       case 0:
         this.setState({
           sortDate: 1,
-          sortDateValue: "Oui"
+          sortDateValue: "⬜️"
         });
         break;
       case 1:
         this.setState({
           sortDate: 0,
-          sortDateValue: "Non"
+          sortDateValue: "⬛️"
         });
         break;
       default:
@@ -94,29 +112,43 @@ class Launches extends React.Component {
     if (error) {
       return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
-      return <div>Chargement en cours …</div>;
+      return <div><br></br><br></br>Chargement en cours …</div>;
     } else {
       return (
         <>
         <br></br>
-        <h1>Tous les lancements :</h1>
+        <h1>Tous les lancements</h1>
+        <br></br>
+        <br></br>
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" onChange={this.handleChange} placeholder="Nom de la mission" />
+          {btnMore ? (
+            <input type="submit" value="Rechercher" />
+          ) : (
+            null
+          )}
+        </form>
+        <br></br>
         <br></br>
         {btnMore ? (
-          <button onClick={() => this.sortDateResult()}> Trie par DATE : {sortDateValue}</button>
+          <button onClick={() => this.sortDateResult()}> Trie par date : {sortDateValue}</button>
         ) : (
           null
         )}
         <br></br>
         <br></br>
-        {launches.map(launch => (
-            <div key={launch.id}>
-                <Link to={"/launch/" + launch.id}>{launch.mission_name}</Link>
-                <br></br>
-            </div>
-        ))}
+        <div className="card" style={{ width: '60rem' }}>
+          <ul className="list-group list-group-flush">
+            {launches.map(launch => (
+              <li key={launch.id} className="list-group-item">{launch.launch_success === true ? "✅" : "❌"} <Link to={"/launch/" + launch.id}>{launch.mission_name}</Link></li>
+            ))}
+          </ul>
+        </div>
 
         <br></br>
-        {btnMore ? <button onClick={() => this.updateLimit()}> Afficher plus</button> : "Chargement ..."}
+        {btnMore ? <button onClick={() => this.updateLimit()}>⬇️ Afficher plus ⬇️</button> : "Chargement ..."}
+        <br></br>
+        <br></br>
         </>
       );
     }

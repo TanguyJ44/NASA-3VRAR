@@ -43,25 +43,25 @@ class Missions extends React.Component {
     if (error) {
       return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
-      return <div>Chargement en cours …</div>;
+      return <div><br></br><br></br>Chargement en cours …</div>;
     } else {
       const core = missions.cores[0].core;
-      console.log(missions);
       return (
         <>
         <br></br>
-        <h1>Missions rattaché au First Stage #{core.id}</h1>
-        <p>Premier vol : {new Date(core.original_launch).toLocaleString()}</p>
-        <p>Atterrissage sous la pluie : {core.water_landing === true ? "Oui" : "Non"}</p>
-        <p>Nombre de réutilisations : {core.reuse_count}</p>
+        <h1>Missions rattaché</h1>
         <br></br>
-          <ul>
+        <p><b>Premier vol : </b>{new Date(core.original_launch).toLocaleString()}</p>
+        <p><b>Atterrissage sous la pluie : </b>{core.water_landing === true ? "Oui" : "Non"}</p>
+        <p><b>Nombre de réutilisations : </b>{core.reuse_count}</p>
+        <br></br>
+        <div className="card" style={{ width: '60rem' }}>
+          <ul className="list-group list-group-flush">
             {core.missions.map(mission => (
-              <li key={mission.flight}>
-                <p>[{mission.flight}] {mission.name}</p>
-              </li>
+              <li key={mission.flight} className="list-group-item">[{mission.flight}] {mission.name}</li>
             ))}
           </ul>
+        </div>
         </>
       );
     }

@@ -44,17 +44,21 @@ class Launch extends React.Component {
     if (error) {
       return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
-      return <div>Chargement en cours …</div>;
+      return <div><br></br><br></br>Chargement en cours …</div>;
     } else {
       return (
         <>
         <br></br>
-        <img width="100" alt="mission" src={launch.links.mission_patch_small}></img>
-        <p>Nom : {launch.mission_name}</p>
-        <p>Lanceur : {launch.rocket.rocket_name}</p>
-        <p>Date : {new Date(launch.launch_date_utc).toLocaleString()}</p>
-        <p>{launch.launch_success === true ? "Lancement réussi" : "Lancement raté"}</p>
-        <p>#First Stage ID : <Link to={"/missions/" + launch.id}>{launch.rocket.first_stage.cores[0].core.id}</Link></p>
+        <h1>Lancement</h1>
+        <br></br>
+        <div className="card align-items-center" style={{ width: '18rem' }}>
+          <img className="card-img-top" style={{ width: '150px' }} alt="mission" src={launch.links.mission_patch_small == null ? "https://graphiste.com/blog/wp-content/uploads/2019/08/1920px-NASA_logo.svg-e1567160347263.png" : launch.links.mission_patch_small}></img>
+          <div className="card-body">
+            <h5 className="card-title">{launch.mission_name}</h5>
+            <p className="card-text">Lanceur : {launch.rocket.rocket_name}<br></br>Date : {new Date(launch.launch_date_utc).toLocaleString()}<br></br>{launch.launch_success === true ? "Lancement ✅" : "Lancement ❌"}</p>
+            <Link className="btn btn-primary" to={"/missions/" + launch.id}>Voir les missions</Link>
+          </div>
+        </div>
         </>
       );
     }

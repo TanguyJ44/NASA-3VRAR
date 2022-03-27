@@ -10,24 +10,18 @@ function App() {
   return (
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-dark">
-        <p id="title">🚀 National Aeronautics and Supinfo Administration</p>
+        <p id="title"><b>🔭 National Aeronautics and Supinfo Administration</b></p>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <Link to="" id="a-link">1️⃣ Accueil</Link>
+              <Link to="" id="a-link">🏠 Accueil</Link>
             </li>
             <li className="nav-item">
-              <Link to="/launches" id="a-link">2️⃣ Lancements</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="page3" id="a-link">3️⃣ Page 3</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="page4" id="a-link">4️⃣ Page 4</Link>
+              <Link to="/launches" id="a-link">🚀 Lancements</Link>
             </li>
           </ul>
           <form className="form-inline my-2 my-lg-0">
-            <p id="about">Supinfo</p>
+            <p id="about">Données fournies par <b>Spacex Land</b></p>
           </form>
         </div>
       </nav>
